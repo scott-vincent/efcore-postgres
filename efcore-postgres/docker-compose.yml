@@ -1,0 +1,24 @@
+﻿version: '3'
+services:
+  efcore-postgres:
+    image: efcore-postgres
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5000
+    ports:
+      - "5000:5000"
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=post-docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - /root/docker/volumes/postgres:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@nowhere.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres-docker
+    ports:
+      - "54321:80"
