@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using efcore_postgres.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,9 @@ namespace efcore_postgres
                 .AddDbContext<ScottContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("ScottDatabase")))
                 .BuildServiceProvider();
+
+            // Register the services we are injecting into our controllers
+            services.AddScoped<IEmployeesService, EmployeesService>();
 
         }
 
