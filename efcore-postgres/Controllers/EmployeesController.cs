@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using efcore_postgres.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace efcore_postgres.Controllers
 {
@@ -18,14 +15,29 @@ namespace efcore_postgres.Controllers
             _service = service;
         }
 
-        // GET api/employees
+        /// 
+        /// GET api/employees
+        /// 
+        /// <summary>
+        /// Gets all employees.
+        /// </summary>
+        /// <remarks>
+        /// This remark appears in the Swagger documentation.
+        /// </remarks>
+        /// 
         [HttpGet]
         public ActionResult<IEnumerable<Employee>> Get()
         {
             return Ok(_service.GetAll());
         }
 
-        // GET api/employees/5
+        ///
+        /// GET api/employees/5
+        /// 
+        /// <summary>
+        /// Gets a single employee.
+        /// </summary>
+        /// 
         [HttpGet("{id}")]
         public ActionResult<Employee> Get(int id)
         {
@@ -38,7 +50,13 @@ namespace efcore_postgres.Controllers
             return Ok(employee);
         }
 
-        // POST api/employees
+        /// 
+        /// POST api/employees
+        /// 
+        /// <summary>
+        /// Adds a new employee.
+        /// </summary>
+        /// 
         [HttpPost]
         public ActionResult<Employee> Post([FromBody] Employee employee)
         {
@@ -50,7 +68,13 @@ namespace efcore_postgres.Controllers
             return Ok(_service.Add(employee));
         }
 
-        // DELETE api/employees/5
+        /// 
+        /// DELETE api/employees/5
+        /// 
+        /// <summary>
+        /// Deletes an employee.
+        /// </summary>
+        /// 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
