@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.Extensions;
 using Microsoft.Extensions.Configuration;
+using efcore_postgres.Database;
 
 namespace efcore_postgres
 {
-    public class ScottContext : DbContext
+    public class ScottContext : DbContext, IScottContext
     {
         public ScottContext(DbContextOptions<ScottContext> options)
             : base(options)

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace efcore_postgres_Tests
+namespace efcore_postgres_Tests.Controllers
 {
     public class EmployeesControllerTests
     {

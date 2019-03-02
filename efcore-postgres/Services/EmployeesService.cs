@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using efcore_postgres.Database;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
 namespace efcore_postgres.Services
 {
     public class EmployeesService : IEmployeesService
     {
-        private readonly ScottContext _dbcontext;
-        public EmployeesService(ScottContext context)
+        private readonly IScottContext _dbcontext;
+        public EmployeesService(IScottContext context)
         {
             _dbcontext = context;
         }
