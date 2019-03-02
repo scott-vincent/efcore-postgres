@@ -1,6 +1,6 @@
 # efcore-postgres
 
-This is an example of how to write a REST API in ASP.NET Core 2.2 using the Entity Framework (EF Core).
+This is an example of how to write a REST API in ASP.NET Core 2.2 using the Entity Framework (EF) Core.
 
 ## Demonstrates the use of:
 
