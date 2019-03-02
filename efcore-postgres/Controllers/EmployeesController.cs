@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using efcore_postgres.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,9 +29,9 @@ namespace efcore_postgres.Controllers
         /// </remarks>
         /// 
         [HttpGet]
-        public ActionResult<IEnumerable<Employee>> Get()
+        public ActionResult<IEnumerable<Employee>> GetAll()
         {
-            return Ok(_service.GetAll());
+            return _service.GetAll().ToList();
         }
 
         ///
@@ -39,15 +42,15 @@ namespace efcore_postgres.Controllers
         /// </summary>
         /// 
         [HttpGet("{id}")]
-        public ActionResult<Employee> Get(int id)
+        public ActionResult<Employee> GetById(int id)
         {
             Employee employee = _service.GetById(id);
             if (employee == null)
             {
-                return NotFound();
+                return NotFound($"Could not find employee with id: {id}");
             }
 
-            return Ok(employee);
+            return employee;
         }
 
         /// 
@@ -60,12 +63,26 @@ namespace efcore_postgres.Controllers
         [HttpPost]
         public ActionResult<Employee> Post([FromBody] Employee employee)
         {
+            // Add our custom validation here.
+            // Note: null checks can be done with a Required annotation on the model.
+            if (employee.Name == null)
+            {
+                ModelState.AddModelError("Name", "The Name field is required.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            return Ok(_service.Add(employee));
+            try
+            {
+                var newEmployee = _service.Add(employee);
+                return newEmployee;
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
+            }
         }
 
         /// 
@@ -81,7 +98,7 @@ namespace efcore_postgres.Controllers
             Employee employee = _service.GetById(id);
             if (employee == null || !_service.Remove(employee))
             {
-                return NotFound();
+                return NotFound($"Could not find employee with id: {id}");
             }
 
             return Ok();
