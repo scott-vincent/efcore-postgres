@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using efcore_postgres.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,9 +31,10 @@ namespace efcore_postgres.Controllers
         /// </remarks>
         /// 
         [HttpGet]
-        public ActionResult<IEnumerable<Employee>> GetAll()
+        [Produces("application/json", Type = typeof(List<Employee>))]
+        public async Task<IActionResult> GetAllAsync()
         {
-            return Ok(_service.GetAll());
+            return Ok(await _service.GetAllAsync());
         }
 
         ///
@@ -42,9 +45,10 @@ namespace efcore_postgres.Controllers
         /// </summary>
         /// 
         [HttpGet("{id}")]
-        public ActionResult<Employee> GetById(int id)
+        [Produces("application/json", Type = typeof(Employee))]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            Employee employee = _service.GetById(id);
+            Employee employee = await _service.GetByIdAsync(id);
             if (employee == null)
             {
                 return NotFound($"Could not find employee with id: {id}");
@@ -61,7 +65,8 @@ namespace efcore_postgres.Controllers
         /// </summary>
         /// 
         [HttpPost]
-        public ActionResult<Employee> Post([FromBody] Employee employee)
+        [Produces("application/json", Type = typeof(Employee))]
+        public async Task<IActionResult> PostAsync([FromBody] Employee employee)
         {
             // Add our custom validation here.
             // Note: null checks can be done with a Required annotation on the model.
@@ -76,7 +81,7 @@ namespace efcore_postgres.Controllers
             }
             try
             {
-                var newEmployee = _service.Add(employee);
+                var newEmployee = await _service.AddAsync(employee);
                 return Ok(newEmployee);
             }
             catch (Exception)
@@ -93,15 +98,22 @@ namespace efcore_postgres.Controllers
         /// </summary>
         /// 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        [Produces("application/json", Type = typeof(bool))]
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            Employee employee = _service.GetById(id);
-            if (employee == null || !_service.Remove(employee))
+            bool success = false;
+            Employee employee = await _service.GetByIdAsync(id);
+            if (employee != null)
+            {
+                success = await _service.RemoveAsync(employee);
+            }
+
+            if (!success)
             {
                 return NotFound($"Could not find employee with id: {id}");
             }
 
-            return Ok();
+            return Ok(success);
         }
     }
 }

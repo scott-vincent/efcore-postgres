@@ -4,6 +4,8 @@ using Microsoft.IdentityModel.Protocols;
 using Microsoft.Extensions;
 using Microsoft.Extensions.Configuration;
 using efcore_postgres.Database;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace efcore_postgres
 {
@@ -15,6 +17,28 @@ namespace efcore_postgres
         }
 
         public virtual DbSet<Employee> Employees { get; set; }
+
+        public Task<List<Employee>> GetAllAsync() {
+            return Employees.ToListAsync();
+        }
+
+        public Task<Employee> GetAsync(int id) {
+            return Employees.FindAsync(id);
+        }
+
+        public void AddRec(Employee employee) {
+            Employees.Add(employee);
+        }
+
+        public void RemoveRec(Employee employee)
+        {
+            Employees.Remove(employee);
+        }
+
+        public Task<int> SaveAsync()
+        {
+            return SaveChangesAsync();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

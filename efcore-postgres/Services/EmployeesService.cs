@@ -1,6 +1,9 @@
 ﻿using efcore_postgres.Database;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace efcore_postgres.Services
 {
@@ -12,29 +15,29 @@ namespace efcore_postgres.Services
             _dbcontext = context;
         }
 
-        public IEnumerable<Employee> GetAll()
+        public async Task<List<Employee>> GetAllAsync()
         {
-            return _dbcontext.Employees;
+            return await _dbcontext.GetAllAsync();
         }
 
-        public Employee GetById(int id)
+        public async Task<Employee> GetByIdAsync(int id)
         {
-            return _dbcontext.Employees.Find(id);
+            return await _dbcontext.GetAsync(id);
         }
 
-        public Employee Add(Employee employee)
+        public async Task<Employee> AddAsync(Employee employee)
         {
-            _dbcontext.Employees.Add(employee);
-            _dbcontext.SaveChanges();
+            _dbcontext.AddRec(employee);
+            await _dbcontext.SaveAsync();
             return employee;
         }
 
-        public bool Remove(Employee employee)
+        public async Task<bool> RemoveAsync(Employee employee)
         {
             try
             {
-                _dbcontext.Employees.Remove(employee);
-                _dbcontext.SaveChanges();
+                _dbcontext.RemoveRec(employee);
+                await _dbcontext.SaveAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
