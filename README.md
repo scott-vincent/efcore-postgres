@@ -7,6 +7,7 @@ This is an example of how to write a REST API in ASP.NET Core 2.2 using the Enti
 - ASP.NET Core 2.2
 - Entity Framework (EF) Core
 - REST
+- async / await
 - Postgres
 - Swashbuckle (Swagger)
 - XUnit
