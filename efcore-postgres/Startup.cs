@@ -1,4 +1,5 @@
-﻿using efcore_postgres.Services;
+﻿using efcore_postgres.Database;
+using efcore_postgres.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -61,8 +62,9 @@ namespace efcore_postgres
                 c.IncludeXmlComments(xmlPath);
             });
 
-            // Register the services we are injecting into our controllers
+            // Register our dependencies so they get injected by the framework
             services.AddScoped<IEmployeesService, EmployeesService>();
+            services.AddScoped<IScottContext, ScottContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

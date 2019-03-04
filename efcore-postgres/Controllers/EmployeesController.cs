@@ -31,7 +31,7 @@ namespace efcore_postgres.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Employee>> GetAll()
         {
-            return _service.GetAll().ToList();
+            return Ok(_service.GetAll());
         }
 
         ///
@@ -50,7 +50,7 @@ namespace efcore_postgres.Controllers
                 return NotFound($"Could not find employee with id: {id}");
             }
 
-            return employee;
+            return Ok(employee);
         }
 
         /// 
@@ -77,7 +77,7 @@ namespace efcore_postgres.Controllers
             try
             {
                 var newEmployee = _service.Add(employee);
-                return newEmployee;
+                return Ok(newEmployee);
             }
             catch (Exception)
             {

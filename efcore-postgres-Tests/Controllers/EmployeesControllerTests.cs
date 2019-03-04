@@ -26,9 +26,12 @@ namespace efcore_postgres_Tests.Controllers
         {
             var response = _controller.GetAll();
 
-            Assert.NotNull(response.Value);
-            var employees = Assert.IsAssignableFrom<IEnumerable<Employee>>(response.Value);
+            // Check for OK response
+            Assert.NotNull(response.Result);
+            var result = Assert.IsType<OkObjectResult>(response.Result);
 
+            // Check returned data
+            var employees = Assert.IsAssignableFrom<IEnumerable<Employee>>(result.Value);
             Assert.Equal(3, employees.Count());
             Employee employee1 = employees.Where(a => a.Id == 1).FirstOrDefault();
             Assert.Equal("Person 1", employee1.Name);
@@ -39,9 +42,12 @@ namespace efcore_postgres_Tests.Controllers
         {
             var response = _controller.GetById(3);
 
-            Assert.NotNull(response.Value);
-            var employee = Assert.IsType<Employee>(response.Value);
+            // Check for OK response
+            Assert.NotNull(response.Result);
+            var result = Assert.IsType<OkObjectResult>(response.Result);
 
+            // Check returned data
+            var employee = Assert.IsType<Employee>(result.Value);
             Assert.Equal(3, employee.Id);
             Assert.Equal("Person 3", employee.Name);
         }
@@ -51,6 +57,7 @@ namespace efcore_postgres_Tests.Controllers
         {
             var response = _controller.GetById(99);
 
+            // Check for Not Found response
             Assert.NotNull(response.Result);
             var result = Assert.IsType<NotFoundObjectResult>(response.Result);
             Assert.Equal("Could not find employee with id: 99", (string)result.Value);
@@ -66,6 +73,7 @@ namespace efcore_postgres_Tests.Controllers
 
             var response = _controller.Post(badEmployee);
 
+            // Check for Bad Request response
             Assert.NotNull(response.Result);
             var result = Assert.IsType<BadRequestObjectResult>(response.Result);
 
@@ -86,8 +94,12 @@ namespace efcore_postgres_Tests.Controllers
 
             var response = _controller.Post(employee);
 
-            Assert.NotNull(response.Value);
-            var newEmployee = response.Value;
+            // Check for OK response
+            Assert.NotNull(response.Result);
+            var result = Assert.IsType<OkObjectResult>(response.Result);
+
+            // Check returned data
+            var newEmployee = result.Value as Employee;
             Assert.Equal("New Person", newEmployee.Name);
             Assert.Equal(12345M, newEmployee.Salary);
 
@@ -101,12 +113,15 @@ namespace efcore_postgres_Tests.Controllers
             // Add a new employee
             var employee = new Employee() { Name = "Delete Me" };
             var response = _controller.Post(employee);
-            Assert.NotNull(response.Value);
-            var id = response.Value.Id;
+            Assert.NotNull(response.Result);
+            var addResult = Assert.IsType<OkObjectResult>(response.Result);
+            var newEmployee = addResult.Value as Employee;
+            var id = newEmployee.Id;
 
             // Delete the employee
             var result = _controller.Delete(id);
 
+            // Check for OK response
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
 
@@ -121,6 +136,7 @@ namespace efcore_postgres_Tests.Controllers
         {
             var response = _controller.Delete(99);
 
+            // Check for Not Found response
             Assert.NotNull(response);
             var result = Assert.IsType<NotFoundObjectResult>(response);
             Assert.Equal("Could not find employee with id: 99", (string)result.Value);

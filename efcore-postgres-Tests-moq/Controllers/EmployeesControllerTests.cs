@@ -57,10 +57,12 @@ namespace efcore_postgres_Tests_Moq.Controllers
             // Perform test
             var response = _controller.GetAll();
 
-            // Check results
-            Assert.NotNull(response.Value);
-            var employees = Assert.IsAssignableFrom<IEnumerable<Employee>>(response.Value);
+            // Check for OK response
+            Assert.NotNull(response.Result);
+            var result = Assert.IsType<OkObjectResult>(response.Result);
 
+            // Check returned data
+            var employees = Assert.IsAssignableFrom<IEnumerable<Employee>>(result.Value);
             Assert.Equal(3, employees.Count());
             Employee employee1 = employees.Where(a => a.Id == 1).FirstOrDefault();
             Assert.Equal("Person 1", employee1.Name);
@@ -76,10 +78,12 @@ namespace efcore_postgres_Tests_Moq.Controllers
             // Perform test
             var response = _controller.GetById(3);
 
-            // Check results
-            Assert.NotNull(response.Value);
-            var employee = Assert.IsType<Employee>(response.Value);
+            // Check for OK response
+            Assert.NotNull(response.Result);
+            var result = Assert.IsType<OkObjectResult>(response.Result);
 
+            // Check returned data
+            var employee = Assert.IsType<Employee>(result.Value);
             Assert.Equal(3, employee.Id);
             Assert.Equal("Person 3", employee.Name);
         }
@@ -90,7 +94,7 @@ namespace efcore_postgres_Tests_Moq.Controllers
             // Perform test
             var response = _controller.GetById(99);
 
-            // Check results
+            // Check for Not Found response
             Assert.NotNull(response.Result);
             var result = Assert.IsType<NotFoundObjectResult>(response.Result);
             Assert.Equal("Could not find employee with id: 99", (string)result.Value);
@@ -107,7 +111,7 @@ namespace efcore_postgres_Tests_Moq.Controllers
             // Perform test
             var response = _controller.Post(badEmployee);
 
-            // Check results
+            // Check for Bad Request response
             Assert.NotNull(response.Result);
             var result = Assert.IsType<BadRequestObjectResult>(response.Result);
 
@@ -130,9 +134,12 @@ namespace efcore_postgres_Tests_Moq.Controllers
             // Perform test
             var response = _controller.Post(employee);
 
-            // Check results
-            Assert.NotNull(response.Value);
-            var newEmployee = response.Value;
+            // Check for OK response
+            Assert.NotNull(response.Result);
+            var result = Assert.IsType<OkObjectResult>(response.Result);
+
+            // Check returned data
+            var newEmployee = result.Value as Employee;
             Assert.Equal("New Person", newEmployee.Name);
             Assert.Equal(12345M, newEmployee.Salary);
 
@@ -156,6 +163,7 @@ namespace efcore_postgres_Tests_Moq.Controllers
             // Delete the employee
             var result = _controller.Delete(1);
 
+            // Check for OK response
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
         }
@@ -166,7 +174,7 @@ namespace efcore_postgres_Tests_Moq.Controllers
             // Perform test
             var response = _controller.Delete(99);
 
-            // Check results
+            // Check for Not Found response
             Assert.NotNull(response);
             var result = Assert.IsType<NotFoundObjectResult>(response);
             Assert.Equal("Could not find employee with id: 99", (string)result.Value);
