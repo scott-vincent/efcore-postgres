@@ -1,0 +1,19 @@
+if [ -n "$1" ]
+then
+  id="$1"
+else
+  id="1111-1111"
+fi
+if [ -n "$2" ]
+then
+  name="$2"
+else
+  name="Tom Cruise"
+fi
+
+aws dynamodb put-item \
+  --table-name Employees \
+  --item "{ \"Id\": {\"S\": \"$id\"}, \"Name\": {\"S\": \"$name\"} }" \
+  --endpoint-url http://localhost:8000
+
+./scan-employees
