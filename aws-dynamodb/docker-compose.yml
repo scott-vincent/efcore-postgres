@@ -1,0 +1,19 @@
+version: '3'
+services:
+  aws-dynamodb:
+    image: aws-dynamodb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+    ports:
+      - "5000:5000"
+  dynamodb:
+    image: amazon/dynamodb-local
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /data/db
+    ports:
+      - "8000:8000"
+    volumes:
+      - /root/docker/volumes/dynamodb:/data/db
