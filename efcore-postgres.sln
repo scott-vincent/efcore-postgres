@@ -6,7 +6,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efcore-postgres", "efcore-p
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efcore-postgres-Tests", "efcore-postgres-Tests\efcore-postgres-Tests.csproj", "{FFBB1DC5-AA43-44FD-8494-85C179196D1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aws-dynamodb", "aws-dynamodb\aws-dynamodb.csproj", "{D2B19CFD-998B-4C9B-968B-F34C71F8CFD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aws-dynamodb", "aws-dynamodb\aws-dynamodb.csproj", "{D2B19CFD-998B-4C9B-968B-F34C71F8CFD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aws-dynamodb-tests", "aws-dynamodb-tests\aws-dynamodb-tests.csproj", "{A9A05A99-42E0-4278-9405-88F8DEDE1097}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{D2B19CFD-998B-4C9B-968B-F34C71F8CFD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2B19CFD-998B-4C9B-968B-F34C71F8CFD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2B19CFD-998B-4C9B-968B-F34C71F8CFD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A05A99-42E0-4278-9405-88F8DEDE1097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A05A99-42E0-4278-9405-88F8DEDE1097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A05A99-42E0-4278-9405-88F8DEDE1097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A05A99-42E0-4278-9405-88F8DEDE1097}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

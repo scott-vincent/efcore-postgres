@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Amazon.DynamoDBv2.Model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace aws_dynamodb.Database
@@ -9,5 +10,6 @@ namespace aws_dynamodb.Database
         Task<Employee> GetByIdAsync(string id);
         Task<Employee> AddAsync(Employee employee);
         Task<bool> RemoveAsync(Employee employee);
+        Task CreateTableAsync();
     }
 }

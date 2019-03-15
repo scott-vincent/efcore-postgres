@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RootNamespace>efcore_postgres_Moq_Tests</RootNamespace>
+    <RootNamespace>aws_dynamodb_tests</RootNamespace>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\efcore-postgres\efcore-postgres.csproj" />
+    <ProjectReference Include="..\aws-dynamodb\aws-dynamodb.csproj" />
   </ItemGroup>
 
 </Project>

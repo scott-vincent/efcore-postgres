@@ -1,5 +1,6 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,10 @@ namespace aws_dynamodb.Database
         private readonly IAmazonDynamoDB _dynamoDb;
         private readonly DynamoDBContext _dynamoContext;
 
-        public DynamoDbContext(IAmazonDynamoDB dynamoDb)
+        public DynamoDbContext(IAmazonDynamoDB dynamoClient)
         {
             // Provides direct access to the database
-            _dynamoDb = dynamoDb;
+            _dynamoDb = dynamoClient;
 
             // Provides access to the database via the Object Persistence Model
             _dynamoContext = new DynamoDBContext(_dynamoDb, new DynamoDBContextConfig { ConsistentRead = true, SkipVersionCheck = true });
@@ -56,6 +57,45 @@ namespace aws_dynamodb.Database
             }
 
             return true;
+        }
+
+        public async Task CreateTableAsync()
+        {
+            var tableDef = new CreateTableRequest
+            {
+                AttributeDefinitions = new List<AttributeDefinition>
+                {
+                    new AttributeDefinition
+                    {
+                        AttributeName = "Id",
+                        AttributeType = "S"
+                    }
+                },
+                KeySchema = new List<KeySchemaElement>
+                {
+                    new KeySchemaElement
+                    {
+                        AttributeName = "Id",
+                        KeyType = "HASH" // Partition Key
+                    }
+                },
+                ProvisionedThroughput = new ProvisionedThroughput
+                {
+                    ReadCapacityUnits = 5,
+                    WriteCapacityUnits = 5
+                },
+                TableName = "Employees"
+            };
+
+            try
+            {
+                await _dynamoDb.CreateTableAsync(tableDef);
+            }
+            catch (ResourceInUseException)
+            {
+                // Not an error: table already exists
+                return;
+            }
         }
     }
 }
